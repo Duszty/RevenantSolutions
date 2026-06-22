@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Revenant — A premium Valorant stats lookup tool. Search any player by Riot ID to view rank, level, match history, and performance.">
+    <title>REVENANT — Valorant Stats Tracker</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <!-- Header -->
+    <header id="app-header">
+        <div class="header-inner">
+            <div class="logo" id="logo">
+                <span class="logo-icon">◆</span>
+                <span class="logo-text">REVENANT</span>
+            </div>
+            <nav class="nav-links">
+                <a href="#" class="nav-link active" data-section="search">SEARCH</a>
+                <a href="#" class="nav-link" data-section="about">ABOUT</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="app-main">
+
+        <!-- Hero / Search Section -->
+        <section id="hero-section" class="section active">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    <span class="hero-title-line hero-title-line-1">TRACK YOUR</span>
+                    <span class="hero-title-line hero-title-line-2">PERFORMANCE</span>
+                </h1>
+                <p class="hero-subtitle">Enter a Riot ID to view rank, stats, and match history</p>
+
+                <div class="search-container" id="search-container">
+                    <div class="search-box">
+                        <div class="search-input-group">
+                            <input 
+                                type="text" 
+                                id="riot-id-input" 
+                                class="search-input" 
+                                placeholder="Name#TAG"
+                                autocomplete="off"
+                                spellcheck="false"
+                            >
+                        </div>
+                        <div class="search-region-group">
+                            <select id="region-select" class="region-select">
+                                <option value="na">NA</option>
+                                <option value="eu">EU</option>
+                                <option value="ap">AP</option>
+                                <option value="kr">KR</option>
+                                <option value="br">BR</option>
+                                <option value="latam">LATAM</option>
+                            </select>
+                        </div>
+                        <button id="search-btn" class="search-btn" type="button">
+                            <span class="search-btn-text">SEARCH</span>
+                            <span class="search-btn-icon">→</span>
+                        </button>
+                    </div>
+                    <div id="search-error" class="search-error hidden"></div>
+                </div>
+
+                <!-- Recent Searches -->
+                <div id="recent-searches" class="recent-searches hidden">
+                    <span class="recent-label">RECENT</span>
+                    <div id="recent-list" class="recent-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading State -->
+        <section id="loading-section" class="section hidden">
+            <div class="loading-container">
+                <div class="loading-spinner">
+                    <div class="spinner-ring"></div>
+                    <div class="spinner-ring"></div>
+                    <div class="spinner-ring"></div>
+                </div>
+                <p class="loading-text">RETRIEVING AGENT DATA<span class="loading-dots"></span></p>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results-section" class="section hidden">
+            <!-- Back Button -->
+            <button id="back-btn" class="back-btn">
+                <span>←</span> NEW SEARCH
+            </button>
+
+            <!-- Player Card -->
+            <div class="player-card" id="player-card">
+                <div class="player-card-bg" id="player-card-bg"></div>
+                <div class="player-card-content">
+                    <div class="player-avatar-wrap">
+                        <img id="player-avatar" class="player-avatar" src="" alt="Player Card">
+                    </div>
+                    <div class="player-info">
+                        <h2 class="player-name" id="player-name">—</h2>
+                        <span class="player-tag" id="player-tag">#—</span>
+                        <div class="player-level">
+                            <span class="level-label">LEVEL</span>
+                            <span class="level-value" id="player-level">—</span>
+                        </div>
+                    </div>
+                    <div class="player-rank-wrap">
+                        <img id="rank-icon" class="rank-icon" src="" alt="Rank">
+                        <span class="rank-name" id="rank-name">—</span>
+                        <span class="rank-rr" id="rank-rr">— RR</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid" id="stats-grid">
+                <div class="stat-card" id="stat-peak-rank">
+                    <div class="stat-icon">▲</div>
+                    <div class="stat-label">PEAK RANK</div>
+                    <div class="stat-value" id="peak-rank-value">—</div>
+                    <img id="peak-rank-icon" class="stat-rank-icon" src="" alt="">
+                </div>
+                <div class="stat-card" id="stat-wins">
+                    <div class="stat-icon">✦</div>
+                    <div class="stat-label">WINS</div>
+                    <div class="stat-value" id="wins-value">—</div>
+                </div>
+                <div class="stat-card" id="stat-elo">
+                    <div class="stat-icon">◈</div>
+                    <div class="stat-label">ELO</div>
+                    <div class="stat-value" id="elo-value">—</div>
+                </div>
+                <div class="stat-card" id="stat-region">
+                    <div class="stat-icon">◎</div>
+                    <div class="stat-label">REGION</div>
+                    <div class="stat-value" id="region-value">—</div>
+                </div>
+            </div>
+
+            <!-- Match History -->
+            <div class="match-history" id="match-history">
+                <h3 class="section-title">
+                    <span class="section-title-accent">◆</span> MATCH HISTORY
+                </h3>
+                <div class="match-list" id="match-list">
+                    <!-- Matches will be injected here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="app-footer">
+        <p>REVENANT is not endorsed by Riot Games and does not reflect the views or opinions of Riot Games or anyone officially involved in producing or managing Riot Games properties.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
